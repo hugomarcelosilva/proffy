@@ -1,0 +1,10 @@
+{
+  "sqltools.connections": [
+    {
+      "database": "${workspaceFolder:proffy}/backend/src/database/database.sqlite",
+      "driver": "SQLite",
+      "name": "proffy",
+      "previewLimit": 50
+    }
+  ]
+}

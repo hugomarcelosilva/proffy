@@ -34,7 +34,7 @@
 yarn knex:migrate
 
 # iniciar servidor da aplicação
-yarn start
+yarn dev:server
 
 ```
 

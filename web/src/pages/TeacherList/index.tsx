@@ -93,11 +93,11 @@ const TeacherList: React.FC = () => {
             );
           })
         ) : (
-          <article>
+          <section>
             <p>
               Nenhum professor encontrado <br /> com sua pesquisa.
             </p>
-          </article>
+          </section>
         )}
       </main>
     </div>

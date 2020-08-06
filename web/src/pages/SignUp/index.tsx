@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { object, string, ValidationError } from 'yup';
+import { toast } from 'react-toastify';
 
 import PageHeader from '../../components/PageHeader';
 import Input from '../../components/Input';
@@ -54,14 +55,16 @@ const SignUp: React.FC = () => {
 
         await signIn({ email: data.email, password: data.password });
 
+        toast.success('Conta criada com sucesso!');
+
         history.push('/');
       } catch (err) {
         if (err instanceof ValidationError) {
           const errors = getValidationErrors(err);
 
           formRef.current?.setErrors(errors);
-
-          return;
+        } else {
+          toast.error('Ops! Alguma coisa deu errado, tente novamente!');
         }
       }
     },

@@ -1,4 +1,6 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, useCallback } from 'react';
+import { Form } from '@unform/web';
+import { toast } from 'react-toastify';
 
 import Input from '../../components/Input';
 import PageHeader from '../../components/PageHeader';
@@ -10,37 +12,27 @@ import api from '../../services/api';
 import './styles.css';
 
 const TeacherList: React.FC = () => {
-  const [teachers, setTeachers] = useState([]);
-
-  const [subject, setSubject] = useState('');
-  const [weekDay, setWeekDay] = useState('');
-  const [time, setTime] = useState('');
-
-  async function searchTeachers(e: FormEvent) {
-    e.preventDefault();
-
-    const response = await api.get('classes', {
-      params: {
-        subject,
-        week_day: weekDay,
-        time,
-      },
-    });
-
-    setTeachers(response.data);
-  }
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const handleSubmit = useCallback(data => {
+    (async () => {
+      try {
+        const response = await api.get<Teacher[]>('classes', {
+          params: data,
+        });
+        setTeachers(response.data);
+      } catch (err) {
+        toast.error('Ops! Alguma coisa deu errado, tente mais tarde!');
+      }
+    })();
+  }, []);
 
   return (
     <div id="page-teacher-list" className="container">
       <PageHeader title="Estes são os proffys disponíveis.">
-        <form id="search-teachers" onSubmit={searchTeachers}>
+        <Form id="search-teachers" onSubmit={handleSubmit}>
           <Select
             name="subject"
             label="Matéria"
-            value={subject}
-            onChange={e => {
-              setSubject(e.target.value);
-            }}
             options={[
               { value: 'Artes', label: 'Artes' },
               { value: 'Biologia', label: 'Biologia' },
@@ -57,10 +49,6 @@ const TeacherList: React.FC = () => {
           <Select
             name="week_day"
             label="Dia da semana"
-            value={weekDay}
-            onChange={e => {
-              setWeekDay(e.target.value);
-            }}
             options={[
               { value: '0', label: 'Domingo' },
               { value: '1', label: 'Segunda-feira' },
@@ -71,18 +59,10 @@ const TeacherList: React.FC = () => {
               { value: '6', label: 'Sábado' },
             ]}
           ></Select>
-          <Input
-            type="time"
-            name="time"
-            label="Horário"
-            value={time}
-            onChange={e => {
-              setTime(e.target.value);
-            }}
-          ></Input>
+          <Input type="time" name="time" label="Horário"></Input>
 
           <button type="submit">Buscar</button>
-        </form>
+        </Form>
       </PageHeader>
 
       <main>

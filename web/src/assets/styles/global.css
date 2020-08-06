@@ -19,6 +19,7 @@
   --color-button-text: #ffffff;
   --color-box-base: #ffffff;
   --color-box-footer: #fafafc;
+  --color-form-error: #dd1030;
 }
 
 * {

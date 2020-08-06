@@ -39,7 +39,6 @@ __tests__/coverage
 npm-debug.log
 yarn-error.log
 .vscode/.easyRedis.redis
-dist
 
 tmp/*
 !tmp/.gitkeep

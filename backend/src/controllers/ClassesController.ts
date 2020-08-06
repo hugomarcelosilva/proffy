@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { object, string } from 'yup';
 
 import db from '../database/connection';
 import convertHourToMinutes from '../utils/convertHourToMinutes';
@@ -42,28 +43,26 @@ export default class ClassesController {
   }
 
   async create(request: Request, response: Response) {
-    const {
-      name,
-      avatar,
-      whatsapp,
-      bio,
-      subject,
-      cost,
-      schedule,
-    } = request.body;
+    const { subject, cost, user_id, schedule } = request.body;
+
+    const schema = object().shape({
+      subject: string().required(),
+      cost: string().required(),
+      user_id: string().required(),
+      schedule: string().required(),
+    });
+
+    if (!(await schema.isValid(request.body))) {
+      return response.status(400).json({ error: 'Validation fails' });
+    }
+
+    const user = await db('users').select().where('id', user_id);
+    if (!user[0])
+      return response.status(400).send({ error: 'User not exists' });
 
     const trx = await db.transaction();
 
     try {
-      const insertedUsersIds = await trx('users').insert({
-        name,
-        avatar,
-        whatsapp,
-        bio,
-      });
-
-      const user_id = insertedUsersIds[0];
-
       const insertedClassesIds = await trx('classes').insert({
         subject,
         cost,

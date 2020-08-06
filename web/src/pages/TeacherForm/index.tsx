@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useContext } from 'react';
 import { Form } from '@unform/web';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
@@ -8,9 +8,10 @@ import { FormHandles } from '@unform/core';
 import Input from '../../components/Input';
 import PageHeader from '../../components/PageHeader';
 import Select from '../../components/Select';
-import Textarea from '../../components/Textarea';
 
 import warningIcon from '../../assets/images/icons/warning.svg';
+
+import AuthContext from '../../contexts/auth';
 
 import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
@@ -33,6 +34,8 @@ const TeacherForm: React.FC = () => {
       to: '',
     },
   ]);
+
+  const { user } = useContext(AuthContext);
 
   function addNewScheduleItem() {
     setSchedules([
@@ -57,23 +60,11 @@ const TeacherForm: React.FC = () => {
   );
 
   const handleSubmit = useCallback(
-    async ({ name, avatar, whatsapp, bio, subject, cost }) => {
+    async ({ subject, cost }) => {
       try {
         formRef.current?.setErrors({});
 
         const schema = object().shape({
-          name: string()
-            .min(4, 'Deve ter pelo menos 4 caracteres')
-            .required('Este campo é obrigatório'),
-          avatar: string()
-            .url('Deve ser uma URL válida')
-            .required('Este campo é obrigatório'),
-          whatsapp: string()
-            .min(9, 'Deve ter pelo menos 9 caracteres')
-            .required('Este campo é obrigatório'),
-          bio: string()
-            .min(10, 'Deve ter pelo menos 10 caracteres')
-            .required('Este campo é obrigatório'),
           subject: string().required('Este campo é obrigatório'),
           cost: string().required('Este campo é obrigatório'),
           schedule: array().of(
@@ -86,12 +77,9 @@ const TeacherForm: React.FC = () => {
         });
 
         const data = {
-          name,
-          avatar,
-          whatsapp,
-          bio,
           subject,
           cost,
+          user_id: user.id,
           schedule: schedules,
         };
 
@@ -124,18 +112,6 @@ const TeacherForm: React.FC = () => {
 
       <main>
         <Form ref={formRef} onSubmit={handleSubmit}>
-          <fieldset>
-            <legend>Seus dados</legend>
-
-            <Input name="name" label="Nome completo"></Input>
-            <Input
-              name="avatar"
-              label="Link da sua foto (comece com http://)"
-            ></Input>
-            <Input name="whatsapp" label="Whatsapp (somente números)"></Input>
-            <Textarea name="bio" label="Biografia"></Textarea>
-          </fieldset>
-
           <fieldset>
             <legend>Sobre a aula</legend>
 

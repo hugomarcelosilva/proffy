@@ -53,9 +53,9 @@ const SignUp: React.FC = () => {
 
         await api.post('/users', data);
 
-        await signIn({ email: data.email, password: data.password });
-
         toast.success('Conta criada com sucesso!');
+
+        await signIn({ email: data.email, password: data.password });
 
         history.push('/');
       } catch (err) {

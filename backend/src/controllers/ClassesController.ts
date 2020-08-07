@@ -30,10 +30,10 @@ export default class ClassesController {
       .whereExists(function () {
         this.select('class_schedule.*')
           .from('class_schedule')
-          .whereRaw('`class_schedule`.`class_id` = `classes`. `id`')
-          .whereRaw('`class_schedule`. `week_day` = ??', [Number(week_day)])
-          .whereRaw('`class_schedule`. `from` <= ??', [timeInMinutes])
-          .whereRaw('`class_schedule`. `to` > ??', [timeInMinutes]);
+          .whereRaw('class_schedule.class_id = classes.id')
+          .whereRaw('class_schedule.week_day = ??', [Number(week_day)])
+          .whereRaw('class_schedule.from <= ??', [timeInMinutes])
+          .whereRaw('class_schedule.to > ??', [timeInMinutes]);
       })
       .where('classes.subject', '=', subject)
       .join('users', 'classes.user_id', '=', 'users.id')
@@ -63,11 +63,13 @@ export default class ClassesController {
     const trx = await db.transaction();
 
     try {
-      const insertedClassesIds = await trx('classes').insert({
-        subject,
-        cost,
-        user_id,
-      });
+      const insertedClassesIds = await trx('classes')
+        .insert({
+          subject,
+          cost,
+          user_id,
+        })
+        .returning('id');
 
       const class_id = insertedClassesIds[0];
 
@@ -80,7 +82,7 @@ export default class ClassesController {
         };
       });
 
-      await trx('class_schedule').insert(classSchedule);
+      await trx('class_schedule').insert(classSchedule).returning('id');
 
       await trx.commit();
 

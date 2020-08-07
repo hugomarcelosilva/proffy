@@ -4,12 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc && yarn knex:migrate:prod",
+    "build": "tsc",
     "dev:server": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts",
-    "knex:migrate": "knex --knexfile knexfile.ts migrate:latest",
-    "knex:migrate:rollback": "knex --knexfile knexfile.ts migrate:rollback",
-    "knex:migrate:prod": "knex --knexfile dist/knexfile.js migrate:latest",
-    "knex:migrate:rollback:prod": "knex --knexfile dist/knexfile.js migrate:rollback",
+    "knex:migrate": "knex --knexfile dist/knexfile.js migrate:latest",
+    "knex:migrate:rollback": "knex --knexfile dist/knexfile.js migrate:rollback",
     "start": "node dist/src/server.js"
   },
   "devDependencies": {
@@ -24,10 +22,11 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.2",
-    "sqlite3": "^5.0.0",
+    "pg": "^8.3.0",
     "ts-node": "^8.10.2",
     "yup": "^0.29.3"
   }

@@ -26,6 +26,19 @@
 
 ### :information_source: Instruções Back-end
 
+```bash
+# instalar PostgreSQL - Banco de dados principal
+docker run --name proffy -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
+
+# nome do banco de dados Posgres
+proffy
+
+# instalar os pacotes e dependências
+yarn
+```
+
+Faça uma cópia do arquivo .env.example, renomeie para .env e altere as variáveis de acordo com o seu ambiente.
+
 #### Executando back-end
 
 ```bash

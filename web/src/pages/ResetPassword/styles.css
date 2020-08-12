@@ -1,0 +1,141 @@
+#page-reset-password-form {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 100vw;
+  height: 100vh;
+}
+
+#page-reset-password-form .form-wrapper {
+  height: 65%;
+}
+
+#page-reset-password-form .back-button {
+  display: none;
+}
+
+#page-reset-password-form .form-content {
+  padding: 5rem 4rem;
+}
+
+#page-reset-password-form .form-main {
+  font-family: Poppins, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--color-text-title);
+}
+
+#page-reset-password-form .form-main h2 {
+  margin-bottom: 1.5rem;
+  font-size: 3.4rem;
+}
+
+#page-reset-password-form .form-main p {
+  margin-bottom: 2.5rem;
+  font-size: 1.4rem;
+  color: var(--color-text-base);
+}
+
+#page-reset-password-form .form-button {
+  cursor: pointer;
+  margin-top: 3rem;
+  width: 100%;
+  border: none;
+  color: var(--color-title-in-primary);
+  transition: background-color 0.2s;
+  background-color: var(--color-secondary);
+  padding: 1.8rem 0;
+  border-radius: 0.8rem;
+
+  font: 400 1.9rem Poppins, sans-serif;
+}
+
+#page-reset-password-form .form-button:hover {
+  background-color: var(--color-secondary-dark);
+}
+
+#page-reset-password-form .logo {
+  height: 35%;
+  background: url('../../assets/images/success-background.svg') center/65rem
+    no-repeat;
+  background-color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#page-reset-password-form .logo > div {
+  text-align: left;
+}
+
+#page-reset-password-form .logo > div img {
+  width: 23rem;
+}
+
+#page-reset-password-form .logo > div p {
+  max-width: 15rem;
+  color: var(--color-text-in-primary);
+  margin-top: 0.5rem;
+  font: 400 1.4rem Poppins, sans-serif;
+}
+
+@media (min-width: 1100px) {
+  #page-reset-password-form {
+    flex-direction: row;
+  }
+
+  /* left screen */
+  #page-reset-password-form .form-wrapper {
+    width: 50%;
+    height: 100%;
+
+    display: grid;
+    grid-template-rows: 8rem 1fr;
+    grid-template-columns: 1fr;
+
+    align-items: center;
+    justify-content: center;
+  }
+
+  #page-reset-password-form .back-button {
+    display: block;
+  }
+
+  #page-reset-password-form .back-button img {
+    cursor: pointer;
+    margin-left: 15%;
+  }
+
+  #page-reset-password-form .form-content {
+    margin: 0 auto;
+    width: 60%;
+    height: auto;
+  }
+
+  #page-reset-password-form .form-main h2 {
+    margin-bottom: 1rem;
+    font-size: 4.2rem;
+  }
+
+  #page-reset-password-form .form-main p {
+    margin-bottom: 3rem;
+    font-size: 1.6rem;
+  }
+
+  /* right screen */
+  #page-reset-password-form .logo {
+    background-size: 90%;
+    width: 50%;
+    height: 100%;
+  }
+
+  #page-reset-password-form .logo > div img {
+    width: 33rem;
+  }
+
+  #page-reset-password-form .logo > div p {
+    font-size: 2rem;
+    max-width: 25rem;
+  }
+}

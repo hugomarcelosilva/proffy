@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useContext } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { Form } from '@unform/web';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
@@ -11,7 +11,7 @@ import Select from '../../components/Select';
 
 import warningIcon from '../../assets/images/icons/warning.svg';
 
-import AuthContext from '../../contexts/auth';
+import { useAuth } from '../../contexts/auth';
 
 import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
@@ -35,7 +35,7 @@ const TeacherForm: React.FC = () => {
     },
   ]);
 
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
 
   function addNewScheduleItem() {
     setSchedules([
@@ -87,8 +87,6 @@ const TeacherForm: React.FC = () => {
 
         await api.post('classes', data);
 
-        toast.success('Cadastro realizado com sucesso!');
-
         history.push('/');
       } catch (err) {
         if (err instanceof ValidationError) {
@@ -100,7 +98,7 @@ const TeacherForm: React.FC = () => {
         }
       }
     },
-    [schedules, history],
+    [schedules, history, user.id],
   );
 
   return (

@@ -17,6 +17,8 @@ const usersController = new UsersController();
 
 routes.get('/users', usersController.index);
 routes.post('/users', usersController.create);
+routes.post('/forgot-password', usersController.forgotPassword);
+routes.post('/reset-password', usersController.resetPassword);
 
 routes.post('/sessions', sessionsController.create);
 

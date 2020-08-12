@@ -1,4 +1,5 @@
-import React, { createContext, useState, useCallback } from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
+
 import api from '../services/api';
 
 interface User {
@@ -18,6 +19,7 @@ interface AuthState {
 interface SignInCredentials {
   email: string;
   password: string;
+  rememberPassword?: boolean;
 }
 
 interface AuthContextData {
@@ -43,7 +45,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     return {} as AuthState;
   });
 
-  const signIn = useCallback(async ({ email, password }) => {
+  const signIn = useCallback(async ({ email, password, rememberPassword }) => {
     const response = await api.post('sessions', {
       email,
       password,
@@ -51,8 +53,10 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     const { token, user } = response.data;
 
-    localStorage.setItem('@Proffy:token', token);
-    localStorage.setItem('@Proffy:user', JSON.stringify(user));
+    if (rememberPassword) {
+      localStorage.setItem('@Proffy:token', token);
+      localStorage.setItem('@Proffy:user', JSON.stringify(user));
+    }
 
     api.defaults.headers.authorization = `Bearer ${token}`;
 
@@ -68,11 +72,19 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signed: !!data.token, user: data.user, signIn, signOut }}
+      value={{
+        signed: !!data.token,
+        user: data.user,
+        signIn,
+        signOut,
+      }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export default AuthContext;
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  return context;
+};

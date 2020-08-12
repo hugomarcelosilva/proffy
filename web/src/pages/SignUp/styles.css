@@ -1,145 +1,158 @@
 #page-signup-form {
+  display: flex;
+  flex-direction: column-reverse;
   width: 100vw;
   height: 100vh;
 }
 
-#page-signup-form .page-header .header-content {
-  margin-bottom: 6.4rem;
+#page-signup-form .form-wrapper {
+  height: 65%;
 }
 
-#page-signup-form main {
-  background-color: var(--color-box-base);
-  width: 100%;
-  max-width: 74rem;
-  border-radius: 0.8rem;
-  margin: -3.2rem auto 3.2rem;
-  padding-top: 6.4rem;
-  overflow: hidden;
+#page-signup-form .back-button {
+  display: none;
 }
 
-#page-signup-form main fieldset {
-  border: 0;
-  padding: 0 2.4rem;
+#page-signup-form .form-content {
+  padding: 5rem 4rem;
 }
 
-#page-signup-form main fieldset + fieldset {
-  margin-top: 6.4rem;
-}
-
-#page-signup-form main fieldset legend {
-  font: 700 2.4rem Archivo;
-  color: var(--color-text-title);
-  margin-bottom: 2.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding-bottom: 1.6rem;
-  border-bottom: 1px solid var(--color-line-in-white);
-}
-
-#page-signup-form main fieldset legend button {
-  background: none;
-  border: 0;
-  color: var(--color-primary);
-  font: 700 1.6rem Archivo;
-  cursor: pointer;
-  transition: color 0.2s;
-  outline: none;
-}
-
-#page-signup-form main fieldset legend button:hover {
-  color: var(--color-primary-dark);
-}
-
-#page-signup-form main fieldset .input-block + .textarea-block,
-#page-signup-form main fieldset .select-block + .input-block {
-  margin-top: 2.4rem;
-}
-
-#page-signup-form main label {
-  color: var(--color-text-complement);
-}
-
-#page-signup-form main footer {
-  padding: 4rem 2.4rem;
-  border-top: 1px solid var(--color-line-in-white);
-  margin-top: 2.4rem;
-
+#page-signup-form .form-main {
+  font-family: Poppins, sans-serif;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  color: var(--color-text-title);
+}
+
+#page-signup-form .form-main h2 {
+  margin-bottom: 1rem;
+  font-size: 3.4rem;
+}
+
+#page-signup-form .form-main p {
+  margin-bottom: 2rem;
+  font-size: 1.4rem;
+  max-width: 20rem;
+  color: var(--color-text-base);
+}
+
+#page-signup-form .form-inputs-container > .divided-input {
+  display: grid;
+  column-gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
   align-items: center;
   justify-content: center;
 }
 
-#page-signup-form main footer button {
-  width: 100%;
-  height: 5.6rem;
-  background: var(--color-secondary);
-  color: var(--color-button-text);
-  border: 0;
-  border-radius: 0.8rem;
-  font: 700 1.6rem Archivo;
+#page-signup-form .logo {
+  height: 35%;
+  background: url('../../assets/images/success-background.svg') center/65rem
+    no-repeat;
+  background-color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
-  transition: background-color 0.2s;
-  margin-top: 1rem;
-  margin-right: 1rem;
-  outline: none;
+  flex-direction: column;
+}
+
+#page-signup-form .logo > div {
+  text-align: left;
+}
+
+#page-signup-form .logo > div img {
+  width: 23rem;
+}
+
+#page-signup-form .logo > div p {
+  max-width: 15rem;
+  color: var(--color-text-in-primary);
+  margin-top: 0.5rem;
+  font: 400 1.4rem Poppins, sans-serif;
+}
+
+#page-signup-form .form-button {
   cursor: pointer;
+  margin-top: 3rem;
+  width: 100%;
+  border: none;
+  color: var(--color-title-in-primary);
+  transition: background-color 0.2s;
+  background-color: var(--color-secondary);
+  padding: 1.5rem 0;
+  border-radius: 0.8rem;
+
+  font: 400 1.9rem Poppins, sans-serif;
 }
 
-#page-signup-form main footer button + button {
-  background: var(--color-primary-lighter);
-  color: var(--color-button-text);
-  margin-top: 1rem;
+#page-signup-form .form-button:hover {
+  background-color: var(--color-secondary-dark);
 }
 
-#page-signup-form main footer button:hover {
-  background: var(--color-secondary-dark);
-}
-
-#page-signup-form main footer button + button:hover {
-  background: var(--color-primary-light);
-}
-
-@media (min-width: 700px) {
+@media (min-width: 1100px) {
   #page-signup-form {
-    max-width: 100vw;
+    flex-direction: row;
   }
 
-  #page-signup-form .page-header .header-content {
-    margin-bottom: 0;
-  }
+  /* left screen */
+  #page-signup-form .form-wrapper {
+    width: 50%;
+    height: 100%;
 
-  #page-signup-form main fieldset {
-    padding: 0 6.4rem;
-  }
-
-  #page-signup-form main .schedule-item {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    column-gap: 1.6rem;
-  }
+    grid-template-rows: 8rem 1fr;
+    grid-template-columns: 1fr;
 
-  #page-signup-form main .schedule-item .input-block {
-    margin-top: 0 !important;
-  }
-
-  #page-signup-form main footer {
-    padding: 4rem 6.4rem;
-    display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
   }
 
-  #page-teacher-form main footer p {
-    justify-content: space-between;
+  #page-signup-form .back-button {
+    display: block;
   }
 
-  #page-teacher-form main footer button {
-    width: 20rem;
+  #page-signup-form .back-button img {
+    cursor: pointer;
+    margin-left: 15%;
+  }
+
+  #page-signup-form .form-content {
+    margin: 0 auto;
+    width: 75%;
+    height: auto;
+  }
+
+  #page-signup-form .form-main h2 {
+    margin-bottom: 1rem;
+    font-size: 4.2rem;
+  }
+
+  #page-signup-form .form-main p {
+    max-width: 25rem;
+    margin-bottom: 3rem;
+    font-size: 1.6rem;
+  }
+
+  /* right screen */
+  #page-signup-form .logo {
+    background-size: 90%;
+    width: 50%;
+    height: 100%;
+  }
+
+  #page-signup-form .logo > div img {
+    width: 33rem;
+  }
+
+  #page-signup-form .logo > div p {
+    font-size: 2rem;
+    max-width: 25rem;
+  }
+}
+
+@media (max-width: 600px) {
+  #page-signup-form .form-inputs-container > .divided-input {
+    grid-template-columns: 1fr;
   }
 }

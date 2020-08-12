@@ -1,34 +1,31 @@
-import React, { useContext, useRef, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useRef, useCallback } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { object, string, ValidationError } from 'yup';
 import { toast } from 'react-toastify';
 
-import PageHeader from '../../components/PageHeader';
-import Input from '../../components/Input';
+import DynamicInput from '../../components/DynamicInput';
 
-import AuthContext from '../../contexts/auth';
+import logoImg from '../../assets/images/logo.svg';
+import backIcon from '../../assets/images/icons/back.svg';
+
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import api from '../../services/api';
 
 import './styles.css';
-import Textarea from '../../components/Textarea';
 
 interface SignUpFormData {
   name: string;
+  surname: string;
   email: string;
   password: string;
-  avatar: string;
-  whatsapp: string;
-  bio: string;
 }
 
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { signIn } = useContext(AuthContext);
   const history = useHistory();
 
   const handleSubmit = useCallback(
@@ -38,65 +35,71 @@ const SignUp: React.FC = () => {
 
         const schema = object().shape({
           name: string().required('Nome obrigatório'),
+          surname: string().required('Sobrenome obrigatório'),
           email: string()
             .required('E-mail obrigatório')
             .email('Digite um e-mail válido'),
           password: string().required('Senha obrigatória'),
-          avatar: string().required('Avatar obrigatório'),
-          whatsapp: string().required('Número de whatspp obrigatório'),
-          bio: string().required('Biografia obrigatória'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        await api.post('/users', data);
+        await api.post('/users', {
+          name: `${data.name} ${data.surname}`,
+          email: data.email,
+          password: data.password,
+        });
 
-        toast.success('Conta criada com sucesso!');
-
-        await signIn({ email: data.email, password: data.password });
-
-        history.push('/');
+        history.push('/signup-success');
       } catch (err) {
         if (err instanceof ValidationError) {
           const errors = getValidationErrors(err);
 
           formRef.current?.setErrors(errors);
         } else {
-          toast.error('Ops! Alguma coisa deu errado, tente novamente!');
+          toast.error('Ocorreu um erro ao fazer o cadastro, tente novamente');
         }
       }
     },
-    [signIn, history],
+    [history],
   );
 
   return (
-    <div id="page-signup-form" className="container">
-      <PageHeader
-        title="Que maneiro que você quer se registrar."
-        description="O primeiro passo é preencher o formulario de cadastro"
-      />
-      <main>
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <fieldset>
-            <legend>Crie sua conta</legend>
-            <Input name="name" label="Nome completo" />
-            <Input name="email" label="E-mail" />
-            <Input name="avatar" label="Avatar" />
-            <Input name="whatsapp" label="Whatsapp" />
-            <Textarea name="bio" label="Biografia" />
-            <Input type="password" name="password" label="Senha" />
-          </fieldset>
-          <footer>
-            <button type="submit">Salvar cadastro</button>
+    <div id="page-signup-form">
+      <div className="form-wrapper">
+        <Link to="/" className="back-button">
+          <img src={backIcon} alt="Go back" />
+        </Link>
 
-            <button onClick={() => history.push('/signin')}>
-              Já tenho cadastro
-            </button>
-          </footer>
+        <Form className="form-content" ref={formRef} onSubmit={handleSubmit}>
+          <div className="form-main">
+            <h2>Cadastro</h2>
+            <p>Preencha os dados abaixo para começar.</p>
+          </div>
+
+          <div className="form-inputs-container">
+            <div className="form-divided-input">
+              <DynamicInput name="name" label="Nome" />
+              <DynamicInput name="surname" label="Sobrenome" />
+            </div>
+            <DynamicInput name="email" label="E-mail" />
+            <DynamicInput type="password" name="password" label="Senha" />
+          </div>
+
+          <button type="submit" className="form-button">
+            Concluir cadastro
+          </button>
         </Form>
-      </main>
+      </div>
+
+      <div className="logo">
+        <div>
+          <img src={logoImg} alt="Proffy logo" />
+          <p>Sua plataforma de estudos online.</p>
+        </div>
+      </div>
     </div>
   );
 };

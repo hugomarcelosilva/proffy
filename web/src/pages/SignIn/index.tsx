@@ -1,13 +1,17 @@
-import React, { useContext, useRef, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useRef, useCallback, useState } from 'react';
+import { useHistory, Link } from 'react-router-dom';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { object, string, ValidationError } from 'yup';
+import { toast } from 'react-toastify';
 
-import PageHeader from '../../components/PageHeader';
-import Input from '../../components/Input';
+import DynamicInput from '../../components/DynamicInput';
 
-import AuthContext from '../../contexts/auth';
+import logoImg from '../../assets/images/logo.svg';
+import purpleHeart from '../../assets/images/icons/purple-heart.svg';
+import successCheck from '../../assets/images/icons/checked.svg';
+
+import { useAuth } from '../../contexts/auth';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import './styles.css';
@@ -20,8 +24,10 @@ interface SignInFormData {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { signIn } = useContext(AuthContext);
+  const { signIn } = useAuth();
   const history = useHistory();
+
+  const [rememberPassword, setRememberPassword] = useState(false);
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -39,7 +45,11 @@ const SignIn: React.FC = () => {
           abortEarly: false,
         });
 
-        await signIn({ email: data.email, password: data.password });
+        await signIn({
+          email: data.email,
+          password: data.password,
+          rememberPassword,
+        });
 
         history.push('/');
       } catch (err) {
@@ -49,29 +59,68 @@ const SignIn: React.FC = () => {
           formRef.current?.setErrors(errors);
 
           return;
+        } else {
+          toast.error('Ocorreu um erro ao fazer login, cheque as credenciais');
         }
       }
     },
-    [signIn, history],
+    [signIn, history, rememberPassword],
   );
 
   return (
-    <div id="page-signin-form" className="container">
-      <PageHeader title="Digite seus dados para entrar na plataforma." />
-      <main>
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <fieldset>
-            <legend>Faça seu login</legend>
-            <Input name="email" label="E-mail" />
-            <Input type="password" name="password" label="Senha" />
-          </fieldset>
-          <footer>
-            <button type="submit">Entrar</button>
+    <div id="page-signin-form">
+      <div className="logo">
+        <div>
+          <img src={logoImg} alt="Proffy logo" />
+          <p>Sua plataforma de estudos online.</p>
+        </div>
+      </div>
 
-            <button onClick={() => history.push('/signup')}>Criar conta</button>
-          </footer>
-        </Form>
-      </main>
+      <Form className="form-wrapper" ref={formRef} onSubmit={handleSubmit}>
+        <div className="form-content">
+          <div className="form-main">
+            <h2>Fazer login</h2>
+            <Link to="/signup">Criar uma conta</Link>
+          </div>
+
+          <div className="form-inputs-container">
+            <DynamicInput name="email" label="E-mail" />
+            <DynamicInput type="password" name="password" label="Senha" />
+          </div>
+
+          <div className="form-password">
+            <div
+              className="remember-password"
+              onClick={() => setRememberPassword(prev => !prev)}
+            >
+              <button
+                type="button"
+                className={`remember-checkbox ${
+                  rememberPassword ? 'active' : ''
+                }`}
+              >
+                <img src={successCheck} alt="Checked" />
+              </button>
+              <label htmlFor="keepLoggedIn">Lembrar-me</label>
+            </div>
+
+            <Link to="/forgot-password">Esqueci minha senha</Link>
+          </div>
+
+          <button type="submit" className="form-button">
+            Entrar
+          </button>
+        </div>
+
+        <footer className="form-desktop-footer">
+          <p>
+            Não tem conta ? <Link to="/signup">Cadastre-se</Link>
+          </p>
+          <p>
+            É de graça <img src={purpleHeart} alt="Purple heart" />
+          </p>
+        </footer>
+      </Form>
     </div>
   );
 };

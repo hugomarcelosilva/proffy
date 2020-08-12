@@ -1,138 +1,223 @@
 #page-signin-form {
+  display: grid;
+  grid-template-rows: 40rem 1fr;
   width: 100vw;
   height: 100vh;
 }
 
-#page-signin-form .page-header .header-content {
-  margin-bottom: 6.4rem;
-}
-
-#page-signin-form main {
-  background-color: var(--color-box-base);
-  width: 100%;
-  max-width: 74rem;
-  border-radius: 0.8rem;
-  margin: -3.2rem auto 3.2rem;
-  padding-top: 6.4rem;
-  overflow: hidden;
-}
-
-#page-signin-form main fieldset {
-  border: 0;
-  padding: 0 2.4rem;
-}
-
-#page-signin-form main fieldset + fieldset {
-  margin-top: 6.4rem;
-}
-
-#page-signin-form main fieldset legend {
-  font: 700 2.4rem Archivo;
-  color: var(--color-text-title);
-  margin-bottom: 2.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding-bottom: 1.6rem;
-  border-bottom: 1px solid var(--color-line-in-white);
-}
-
-#page-signin-form main fieldset legend button {
-  background: none;
-  border: 0;
-  color: var(--color-primary);
-  font: 700 1.6rem Archivo;
-  cursor: pointer;
-  transition: color 0.2s;
-  outline: none;
-}
-
-#page-signin-form main fieldset legend button:hover {
-  color: var(--color-primary-dark);
-}
-
-#page-signin-form main label {
-  color: var(--color-text-complement);
-}
-
-#page-signin-form main footer {
-  padding: 0.2rem 2.4rem;
-  border-top: 1px solid var(--color-line-in-white);
-  margin-top: 2.4rem;
-
+#page-signin-form .logo {
+  background: url('../../assets/images/success-background.svg') center/65rem
+    no-repeat;
+  background-color: var(--color-primary);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-#page-signin-form main footer button {
-  width: 100%;
-  height: 5.6rem;
-  background: var(--color-secondary);
-  color: var(--color-button-text);
-  border: 0;
-  border-radius: 0.8rem;
-  font: 700 1.6rem Archivo;
+#page-signin-form .logo > div {
+  text-align: left;
+}
+
+#page-signin-form .logo > div img {
+  width: 23rem;
+}
+
+#page-signin-form .logo > div p {
+  max-width: 15rem;
+  color: var(--color-text-in-primary);
+  margin-top: 0.5rem;
+  font: 400 1.4rem Poppins, sans-serif;
+}
+
+#page-signin-form .form-content {
+  padding: 5rem 4rem;
+}
+
+#page-signin-form .form-main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Poppins, sans-serif;
+}
+
+#page-signin-form .form-main h2 {
+  color: var(--color-text-title);
+  font-size: 2.5rem;
+}
+
+#page-signin-form .form-main a {
   text-decoration: none;
-  transition: background-color 0.2s;
-  margin-top: 1rem;
-  margin-right: 1rem;
-  outline: none;
   cursor: pointer;
+  color: var(--color-primary);
+  font-size: 1.4rem;
+  margin-top: 0.8rem;
+  transition: color 0.2s;
 }
 
-#page-signin-form main footer button + button {
-  background: var(--color-primary-lighter);
-  color: var(--color-button-text);
-  margin-top: 1rem;
+#page-signin-form .form-main a:hover {
+  color: var(--color-primary-dark);
 }
 
-#page-signin-form main footer button:hover {
-  background: var(--color-secondary-dark);
+#page-signin-form .form-inputs-container {
+  margin-top: 2rem;
 }
 
-#page-signin-form main footer button + button:hover {
-  background: var(--color-primary-light);
+#page-signin-form .form-password {
+  color: var(--color-text-complement);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 3.5rem;
+  font-size: 1.7rem;
 }
 
-@media (min-width: 700px) {
+#page-signin-form .form-password a {
+  cursor: pointer;
+  color: var(--color-text-complement);
+  transition: color 0.2s;
+  text-decoration: none;
+}
+
+#page-signin-form .form-password a:hover {
+  color: var(--color-text-base);
+}
+
+#page-signin-form .remember-password {
+  display: flex;
+  align-items: center;
+}
+
+#page-signin-form .remember-password .remember-checkbox {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  /* disabled */
+  border: 1px solid var(--color-line-in-white);
+  background-color: var(--color-input-background);
+}
+
+#page-signin-form .remember-password .remember-checkbox.active {
+  border: 0;
+  background-color: var(--color-secondary);
+}
+
+#page-signin-form .remember-password .remember-checkbox:focus {
+  outline: 0;
+}
+
+#page-signin-form .remember-password label {
+  font: 400 1.6rem Poppins;
+  color: var(--color-text-complement);
+  text-decoration: none;
+  user-select: none;
+  margin-left: 16px;
+}
+
+#page-signin-form .form-button {
+  cursor: pointer;
+  margin-top: 2rem;
+  width: 100%;
+  border: none;
+  color: var(--color-title-in-primary);
+  transition: background-color 0.2s;
+  background-color: var(--color-secondary);
+  margin-top: 4rem;
+  padding: 1.6rem 0;
+  border-radius: 0.8rem;
+
+  font: 400 1.9rem Poppins, sans-serif;
+}
+
+#page-signin-form .form-button:hover {
+  background-color: var(--color-secondary-dark);
+}
+
+#page-signin-form .form-desktop-footer {
+  display: none;
+}
+
+@media (min-width: 1100px) {
   #page-signin-form {
-    max-width: 100vw;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
-  #page-signin-form .page-header .header-content {
-    margin-bottom: 0;
+  /* left screen */
+  #page-signin-form .logo {
+    background-size: 90%;
   }
 
-  #page-signin-form main fieldset {
-    padding: 0 6.4rem;
+  #page-signin-form .logo > div img {
+    width: 33rem;
   }
 
-  #page-signin-form main .schedule-item {
+  #page-signin-form .logo > div p {
+    font-size: 2rem;
+    max-width: 25rem;
+  }
+
+  /* right screen */
+  #page-signin-form .form-wrapper {
+    width: 100%;
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    column-gap: 1.6rem;
-  }
+    grid-template-rows: 1fr 15rem;
+    grid-template-columns: 1fr;
 
-  #page-signin-form main .schedule-item .input-block {
-    margin-top: 0 !important;
-  }
-
-  #page-signin-form main footer {
-    padding: 4rem 6.4rem;
-    display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
   }
 
-  #page-signin-form main footer p {
-    justify-content: space-between;
+  #page-signin-form .form-content {
+    margin: 0 auto;
+    width: 75%;
+    height: auto;
   }
 
-  #page-signin-form main footer button {
-    width: 20rem;
+  #page-signin-form .form-main {
+    margin-bottom: 3rem;
+  }
+
+  #page-signin-form .form-main h2 {
+    font-size: 4.2rem;
+  }
+
+  #page-signin-form .form-main :nth-child(2) {
+    display: none;
+  }
+
+  #page-signin-form .form-desktop-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10rem;
+    line-height: 2.5rem;
+  }
+
+  #page-signin-form .form-desktop-footer :nth-child(1) {
+    font-size: 1.8rem;
+    max-width: 15rem;
+  }
+
+  #page-signin-form .form-desktop-footer :nth-child(2) {
+    color: var(--color-text-complement);
+    font-size: 1.5rem;
+  }
+
+  #page-signin-form .form-desktop-footer a {
+    color: var(--color-primary);
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+
+  #page-signin-form .form-desktop-footer a:hover {
+    color: var(--color-primary-dark);
   }
 }

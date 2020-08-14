@@ -58,9 +58,17 @@ export default class ProfilesController {
     });
 
     if (user[0].avatar !== 'default.png') {
-      fs.unlinkSync(
-        path.resolve(__dirname, '..', '..', 'uploads', user[0].avatar),
+      const file = path.resolve(
+        __dirname,
+        '..',
+        '..',
+        'uploads',
+        user[0].avatar,
       );
+
+      if (fs.existsSync(file)) {
+        fs.unlinkSync(file);
+      }
     }
 
     const updatedUser = await db('users').select().where({ id });

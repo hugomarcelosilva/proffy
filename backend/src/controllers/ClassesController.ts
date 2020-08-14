@@ -42,13 +42,31 @@ export default class ClassesController {
     return response.json(classes);
   }
 
+  async show(request: Request, response: Response) {
+    const { id } = request.params;
+
+    const classes = await db('classes').where({ user_id: id });
+
+    return response.status(200).json(classes);
+  }
+
+  async showSchedules(request: Request, response: Response) {
+    const { id } = request.params;
+
+    const classes = await db('classes')
+      .where({ user_id: id })
+      .join('class_schedule', 'classes.id', '=', 'class_schedule.class_id')
+      .select('class_schedule.id', 'week_day', 'from', 'to');
+
+    return response.status(200).json(classes);
+  }
+
   async create(request: Request, response: Response) {
-    const { subject, cost, user_id, schedule } = request.body;
+    const { subject, cost, schedule } = request.body;
 
     const schema = object().shape({
       subject: string().required(),
       cost: string().required(),
-      user_id: string().required(),
       schedule: string().required(),
     });
 
@@ -56,7 +74,10 @@ export default class ClassesController {
       return response.status(400).json({ error: 'Validation fails' });
     }
 
-    const user = await db('users').select().where('id', user_id);
+    const { id } = request.params;
+
+    const user = await db('users').select().where('id', id);
+
     if (!user[0])
       return response.status(400).send({ error: 'User not exists' });
 
@@ -67,7 +88,7 @@ export default class ClassesController {
         .insert({
           subject,
           cost,
-          user_id,
+          user_id: id,
         })
         .returning('id');
 
@@ -82,11 +103,13 @@ export default class ClassesController {
         };
       });
 
-      await trx('class_schedule').insert(classSchedule).returning('id');
+      await trx('class_schedule').insert(classSchedule);
 
       await trx.commit();
 
-      return response.status(201).send();
+      const updatedUser = await db('users').select().where({ id });
+
+      return response.status(200).json(updatedUser[0]);
     } catch (error) {
       await trx.rollback();
 

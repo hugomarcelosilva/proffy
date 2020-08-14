@@ -91,7 +91,7 @@ export default class UsersController {
       return response.send();
     } catch (error) {
       return response.status(400).json({
-        error: 'Unexpected error while processing the forgotten password',
+        error: 'Unexpected error while processing forgotten password',
       });
     }
   }

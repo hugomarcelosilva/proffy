@@ -24,6 +24,15 @@
   white-space: nowrap;
 }
 
+.dynamic-input-block svg {
+  cursor: pointer;
+  width: 2.5rem;
+  height: 2.5rem;
+  position: absolute;
+  right: 1.5rem;
+  top: calc(50% - 1.25rem);
+}
+
 .dynamic-input-block .dynamic-error {
   color: var(--color-form-error);
   font-size: 1.4rem;

@@ -4,6 +4,7 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { object, string, ref, ValidationError } from 'yup';
 import { toast } from 'react-toastify';
+import { Eye, EyeSlash } from '@styled-icons/bootstrap';
 
 import DynamicInput from '../../components/DynamicInput';
 import backIcon from '../../assets/images/icons/back.svg';
@@ -73,11 +74,17 @@ const ResetPassword: React.FC = () => {
             <h2>Resetar senha</h2>
           </div>
 
-          <DynamicInput type="password" name="password" label="Nova Senha" />
+          <DynamicInput
+            type="password"
+            name="password"
+            label="Nova Senha"
+            passwordIcons={[Eye as any, EyeSlash as any]}
+          />
           <DynamicInput
             type="password"
             name="password_confirmation"
             label="Confirmação da senha"
+            passwordIcons={[Eye as any, EyeSlash as any]}
           />
 
           <button type="submit" className="form-button">

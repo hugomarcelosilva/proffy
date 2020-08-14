@@ -4,6 +4,7 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { object, string, ValidationError } from 'yup';
 import { toast } from 'react-toastify';
+import { Eye, EyeSlash } from '@styled-icons/bootstrap';
 
 import DynamicInput from '../../components/DynamicInput';
 
@@ -81,11 +82,16 @@ const SignUp: React.FC = () => {
 
           <div className="form-inputs-container">
             <div className="form-divided-input">
-              <DynamicInput name="name" label="Nome" />
-              <DynamicInput name="surname" label="Sobrenome" />
+              <DynamicInput type="text" name="name" label="Nome" />
+              <DynamicInput type="text" name="surname" label="Sobrenome" />
             </div>
-            <DynamicInput name="email" label="E-mail" />
-            <DynamicInput type="password" name="password" label="Senha" />
+            <DynamicInput type="email" name="email" label="E-mail" />
+            <DynamicInput
+              type="password"
+              name="password"
+              label="Senha"
+              passwordIcons={[Eye as any, EyeSlash as any]}
+            />
           </div>
 
           <button type="submit" className="form-button">

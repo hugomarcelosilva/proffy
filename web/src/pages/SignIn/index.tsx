@@ -4,12 +4,12 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { object, string, ValidationError } from 'yup';
 import { toast } from 'react-toastify';
+import { Eye, EyeSlash } from '@styled-icons/bootstrap';
 
 import DynamicInput from '../../components/DynamicInput';
 
 import logoImg from '../../assets/images/logo.svg';
 import purpleHeart from '../../assets/images/icons/purple-heart.svg';
-import successCheck from '../../assets/images/icons/checked.svg';
 
 import { useAuth } from '../../contexts/auth';
 import getValidationErrors from '../../utils/getValidationErrors';
@@ -84,28 +84,29 @@ const SignIn: React.FC = () => {
           </div>
 
           <div className="form-inputs-container">
-            <DynamicInput name="email" label="E-mail" />
-            <DynamicInput type="password" name="password" label="Senha" />
+            <DynamicInput type="email" name="email" label="E-mail" />
+            <DynamicInput
+              type="password"
+              name="password"
+              label="Senha"
+              passwordIcons={[Eye as any, EyeSlash as any]}
+            />
           </div>
 
-          <div className="form-password">
-            <div
-              className="remember-password"
-              onClick={() => setRememberPassword(prev => !prev)}
-            >
-              <button
-                type="button"
-                className={`remember-checkbox ${
-                  rememberPassword ? 'active' : ''
-                }`}
-              >
-                <img src={successCheck} alt="Checked" />
-              </button>
-              <label htmlFor="keepLoggedIn">Lembrar-me</label>
+          <section className="form-password">
+            <div>
+              <label>
+                Lembrar-me
+                <input
+                  type="checkbox"
+                  checked={rememberPassword}
+                  onChange={() => setRememberPassword(!rememberPassword)}
+                />
+                <span></span>
+              </label>
             </div>
-
             <Link to="/forgot-password">Esqueci minha senha</Link>
-          </div>
+          </section>
 
           <button type="submit" className="form-button">
             Entrar

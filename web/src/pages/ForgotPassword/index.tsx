@@ -72,7 +72,7 @@ const ForgotPassword = () => {
             <p>Não esquenta, vamos dar um jeito nisso.</p>
           </div>
 
-          <DynamicInput name="email" label="E-mail" />
+          <DynamicInput type="email" name="email" label="E-mail" />
 
           <button type="submit" className="form-button">
             Enviar

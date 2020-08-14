@@ -101,6 +101,39 @@
   background: var(--color-secondary-dark);
 }
 
+.page-teacher-info-user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-teacher-info-user .page-teacher-profile {
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  margin-right: 20px;
+}
+
+.page-teacher-info-user h3 {
+  color: #32264d;
+}
+
+.message-header {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  bottom: 1rem;
+}
+
+.message-header h4 {
+  color: #d4c2ff;
+  font-size: 12px;
+  font-family: Poppins;
+  width: 105px;
+  margin-left: 8px;
+}
+
 @media (min-width: 700px) {
   #page-teacher-form {
     max-width: 100vw;
@@ -112,6 +145,16 @@
 
   #page-teacher-form main fieldset {
     padding: 0 6.4rem;
+  }
+
+  #page-teacher-form main .about-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    column-gap: 1.6rem;
+  }
+
+  #page-teacher-form main .about-item .input-block {
+    margin-top: 0 !important;
   }
 
   #page-teacher-form main .schedule-item {
@@ -138,5 +181,21 @@
   #page-teacher-form main footer button {
     width: 20rem;
     margin-top: 0;
+  }
+
+  .page-teacher-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .page-teacher-info-user {
+    display: flex;
+    align-items: center;
+  }
+
+  .message-header {
+    bottom: 8.5rem;
   }
 }

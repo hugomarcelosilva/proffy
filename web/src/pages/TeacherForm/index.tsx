@@ -4,11 +4,14 @@ import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import { object, string, array, ValidationError } from 'yup';
 import { FormHandles } from '@unform/core';
+import { User } from '@styled-icons/fa-solid';
 
 import Input from '../../components/Input';
 import PageHeader from '../../components/PageHeader';
 import Select from '../../components/Select';
+import Textarea from '../../components/Textarea';
 
+import rocket from '../../assets/images/icons/rocket.svg';
 import warningIcon from '../../assets/images/icons/warning.svg';
 
 import { useAuth } from '../../contexts/auth';
@@ -35,7 +38,7 @@ const TeacherForm: React.FC = () => {
     },
   ]);
 
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
 
   function addNewScheduleItem() {
     setSchedules([
@@ -65,13 +68,13 @@ const TeacherForm: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = object().shape({
-          subject: string().required('Este campo é obrigatório'),
-          cost: string().required('Este campo é obrigatório'),
+          subject: string().required('Matéria é obrigatória'),
+          cost: string().required('Custo da hora é obrigatório'),
           schedule: array().of(
             object().shape({
-              week_day: string().required('Este campo é obrigatório'),
-              from: string().required('Este campo é obrigatório'),
-              to: string().required('Este campo é obrigatório'),
+              week_day: string().required('Dia da semana é obrigatório'),
+              from: string().required('Hora inicial é obrigatória'),
+              to: string().required('Hora final é obrigatória'),
             }),
           ),
         });
@@ -79,15 +82,16 @@ const TeacherForm: React.FC = () => {
         const data = {
           subject,
           cost,
-          user_id: user.id,
           schedule: schedules,
         };
 
         await schema.validate(data, { abortEarly: false });
 
-        await api.post('classes', data);
+        const response = await api.post(`classes/${user.id}`, data);
 
-        history.push('/');
+        updateUser(response.data);
+
+        history.push('/give-classes-success');
       } catch (err) {
         if (err instanceof ValidationError) {
           const errors = getValidationErrors(err);
@@ -98,7 +102,7 @@ const TeacherForm: React.FC = () => {
         }
       }
     },
-    [schedules, history, user.id],
+    [schedules, history, updateUser, user.id],
   );
 
   return (
@@ -106,33 +110,74 @@ const TeacherForm: React.FC = () => {
       <PageHeader
         title="Que incrível que você quer dar aulas."
         description="O primeiro passo é preencher esse formulário de inscrição."
-      />
+      >
+        <div className="message-header">
+          <img src={rocket} alt="rocket" />
+          <h4>
+            Prepare-se! <br /> Vai ser o máximo
+          </h4>
+        </div>
+      </PageHeader>
 
       <main>
         <Form ref={formRef} onSubmit={handleSubmit}>
           <fieldset>
+            <legend>Seus dados</legend>
+            <div className="page-teacher-info">
+              <div className="page-teacher-info-user">
+                {user && user.avatar ? (
+                  <img
+                    src={`${process.env.REACT_APP_API_URL}/uploads/${user.avatar}`}
+                    alt="user"
+                    className="page-teacher-profile"
+                  />
+                ) : (
+                  <User className="page-teacher-profile" />
+                )}
+                <h3>{user?.name}</h3>
+              </div>
+              <Input
+                readOnly
+                name="whatsapp"
+                label="Whatsapp"
+                value={user.whatsapp ? user.whatsapp : ''}
+              />
+            </div>
+            <Textarea
+              readOnly
+              name="bio"
+              label="Biografia (Máximo 300 caracteres)"
+              value={user.bio ? user.bio : ''}
+              maxLength={300}
+            />
+          </fieldset>
+
+          <fieldset>
             <legend>Sobre a aula</legend>
 
-            <Select
-              name="subject"
-              label="Matéria"
-              options={[
-                { value: 'Artes', label: 'Artes' },
-                { value: 'Biologia', label: 'Biologia' },
-                { value: 'Ciências', label: 'Ciências' },
-                { value: 'Educação Física', label: 'Educação Física' },
-                { value: 'Física', label: 'Física' },
-                { value: 'Geografia', label: 'Geografia' },
-                { value: 'História', label: 'História' },
-                { value: 'Matemática', label: 'Matemática' },
-                { value: 'Português', label: 'Português' },
-                { value: 'Química', label: 'Química' },
-              ]}
-            ></Select>
-            <Input
-              name="cost"
-              label="Custo da sua hora por aula (em R$)"
-            ></Input>
+            <div className="about-item">
+              <Select
+                name="subject"
+                label="Matéria"
+                options={[
+                  { value: 'Artes', label: 'Artes' },
+                  { value: 'Biologia', label: 'Biologia' },
+                  { value: 'Ciências', label: 'Ciências' },
+                  { value: 'Educação Física', label: 'Educação Física' },
+                  { value: 'Física', label: 'Física' },
+                  { value: 'Geografia', label: 'Geografia' },
+                  { value: 'História', label: 'História' },
+                  { value: 'Matemática', label: 'Matemática' },
+                  { value: 'Português', label: 'Português' },
+                  { value: 'Química', label: 'Química' },
+                ]}
+              ></Select>
+              <Input
+                name="cost"
+                label="Custo da sua hora por aula"
+                placeholder="R$"
+              ></Input>
+            </div>
           </fieldset>
 
           <fieldset>

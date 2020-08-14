@@ -57,7 +57,7 @@ export default class ProfilesController {
       avatar: request.file.filename,
     });
 
-    if (user[0].avatar !== 'default.png') {
+    if (user[0].avatar) {
       const file = path.resolve(
         __dirname,
         '..',

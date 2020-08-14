@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom';
 
 import logoImg from '../../assets/images/logo.svg';
 import landingImg from '../../assets/images/landing.svg';
-
 import studyIcon from '../../assets/images/icons/study.svg';
 import giveClassesIcon from '../../assets/images/icons/give-classes.svg';
 import purpleHeartIcon from '../../assets/images/icons/purple-heart.svg';
 
-import './styles.css';
+import LandingHeader from '../../components/LandingHeader';
+
 import api from '../../services/api';
+
+import './styles.css';
 
 const Landing: React.FC = () => {
   const [totalConnections, setTotalConnections] = useState(0);
@@ -24,7 +26,8 @@ const Landing: React.FC = () => {
 
   return (
     <div id="page-landing">
-      <div id="page-landing-content" className="container">
+      <LandingHeader />
+      <div id="page-landing-content">
         <div className="logo-container">
           <img src={logoImg} alt="Proffy" />
           <h2>Sua plataforma de estudos online.</h2>
@@ -48,10 +51,19 @@ const Landing: React.FC = () => {
           </Link>
         </div>
 
-        <span className="total-connections">
-          Total de {totalConnections} conexões já realizadas
-          <img src={purpleHeartIcon} alt="Coração roxo" />
-        </span>
+        <div className="total">
+          <h5>
+            Seja bem vindo.
+            <span>O que deseja fazer?</span>
+          </h5>
+          <span>
+            Total de {totalConnections} conexões
+            <span>
+              já realizadas
+              <img src={purpleHeartIcon} alt="Coração roxo" />
+            </span>
+          </span>
+        </div>
       </div>
     </div>
   );

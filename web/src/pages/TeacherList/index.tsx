@@ -7,19 +7,23 @@ import PageHeader from '../../components/PageHeader';
 import Select from '../../components/Select';
 import TeacherItem, { Teacher } from '../../components/TeacherItem';
 
+import smile from '../../assets/images/icons/smile.svg';
+
 import api from '../../services/api';
 
 import './styles.css';
 
 const TeacherList: React.FC = () => {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
+
   const handleSubmit = useCallback(data => {
     (async () => {
       try {
-        const response = await api.get<Teacher[]>('classes', {
+        const classes = await api.get<Teacher[]>('classes', {
           params: data,
         });
-        setTeachers(response.data);
+
+        setTeachers(classes.data);
       } catch (err) {
         toast.error('Ops! Alguma coisa deu errado, tente mais tarde!');
       }
@@ -29,7 +33,14 @@ const TeacherList: React.FC = () => {
   return (
     <div id="page-teacher-list" className="container">
       <PageHeader title="Estes são os proffys disponíveis.">
-        <Form id="search-teachers" onSubmit={handleSubmit}>
+        <div className="message-header">
+          <img src={smile} alt="smile" />
+          <h4>
+            Nós temos {teachers.length} <br /> professores.
+          </h4>
+        </div>
+
+        <Form className="search-teachers" onSubmit={handleSubmit}>
           <Select
             name="subject"
             label="Matéria"
@@ -66,18 +77,14 @@ const TeacherList: React.FC = () => {
       </PageHeader>
 
       <main>
-        {teachers.length > 0 ? (
-          teachers.map((teacher: Teacher) => {
-            return (
-              <TeacherItem key={teacher.id} teacher={teacher}></TeacherItem>
-            );
-          })
+        {teachers.length === 0 ? (
+          <div className="no-results">
+            <h2>Nenhum professor encontrado com sua pesquisa</h2>
+          </div>
         ) : (
-          <section>
-            <p>
-              Nenhum professor encontrado <br /> com sua pesquisa.
-            </p>
-          </section>
+          teachers.map(teacher => {
+            return <TeacherItem key={teacher.id} teacher={teacher} />;
+          })
         )}
       </main>
     </div>

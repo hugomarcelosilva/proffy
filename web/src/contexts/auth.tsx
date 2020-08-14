@@ -8,7 +8,18 @@ interface User {
   email: string;
   password: string;
   avatar: string;
+  whatsapp: string;
   bio: string;
+  subject: string;
+  cost: string;
+  schedules: Schedule[];
+}
+
+interface Schedule {
+  class_id: number;
+  week_day: number;
+  from: number;
+  to: number;
 }
 
 interface AuthState {
@@ -27,14 +38,24 @@ interface AuthContextData {
   user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
+  updateUser(user: User): Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
-    const token = localStorage.getItem('@Proffy:token');
-    const user = localStorage.getItem('@Proffy:user');
+    let token = localStorage.getItem('@Proffy:token');
+
+    if (!token) {
+      token = sessionStorage.getItem('@Proffy:token');
+    }
+
+    let user = localStorage.getItem('@Proffy:user');
+
+    if (!user) {
+      user = sessionStorage.getItem('@Proffy:user');
+    }
 
     if (token && user) {
       api.defaults.headers.authorization = `Bearer ${token}`;
@@ -46,19 +67,33 @@ export const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(async ({ email, password, rememberPassword }) => {
-    const response = await api.post('sessions', {
+    const login = await api.post('sessions', {
       email,
       password,
     });
 
-    const { token, user } = response.data;
+    const { token, user } = login.data;
+
+    api.defaults.headers.authorization = `Bearer ${token}`;
+
+    const classes = await api.get(`classes/${user.id}`);
+
+    if (classes.data[0]) {
+      user.subject = classes.data[0].subject;
+      user.cost = classes.data[0].cost;
+
+      const schedules = await api.get(`classes/schedules/${user.id}`);
+
+      user.schedules = schedules.data;
+    }
 
     if (rememberPassword) {
       localStorage.setItem('@Proffy:token', token);
       localStorage.setItem('@Proffy:user', JSON.stringify(user));
+    } else {
+      sessionStorage.setItem('@Proffy:token', token);
+      sessionStorage.setItem('@Proffy:user', JSON.stringify(user));
     }
-
-    api.defaults.headers.authorization = `Bearer ${token}`;
 
     setData({ token, user });
   }, []);
@@ -67,8 +102,35 @@ export const AuthProvider: React.FC = ({ children }) => {
     localStorage.removeItem('@Proffy:token');
     localStorage.removeItem('@Proffy:user');
 
+    sessionStorage.removeItem('@Proffy:token');
+    sessionStorage.removeItem('@Proffy:user');
+
     setData({} as AuthState);
   }, []);
+
+  const updateUser = useCallback(
+    async (user: User) => {
+      localStorage.setItem('@Proffy:user', JSON.stringify(user));
+      sessionStorage.setItem('@Proffy:user', JSON.stringify(user));
+
+      const classes = await api.get(`classes/${user.id}`);
+
+      if (classes.data[0]) {
+        user.subject = classes.data[0].subject;
+        user.cost = classes.data[0].cost;
+
+        const schedules = await api.get(`classes/schedules/${user.id}`);
+
+        user.schedules = schedules.data;
+      }
+
+      setData({
+        token: data.token,
+        user,
+      });
+    },
+    [setData, data.token],
+  );
 
   return (
     <AuthContext.Provider
@@ -77,6 +139,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         user: data.user,
         signIn,
         signOut,
+        updateUser,
       }}
     >
       {children}

@@ -73,7 +73,7 @@ const Profile: React.FC = () => {
           schedule: schedules,
         });
 
-        updateUser(response.data);
+        await updateUser(response.data);
 
         history.push('/');
 

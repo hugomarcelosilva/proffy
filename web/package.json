@@ -18,6 +18,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-toastify": "^6.0.8",
+    "styled-components": "^5.1.1",
+    "styled-icons": "^10.15.0",
     "typescript": "~3.7.2",
     "yup": "^0.29.3"
   },
@@ -44,6 +46,7 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.5",
+    "@types/styled-components": "^5.1.2",
     "@types/yup": "^0.29.4"
   }
 }
